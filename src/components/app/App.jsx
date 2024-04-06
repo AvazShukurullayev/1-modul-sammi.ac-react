@@ -28,8 +28,31 @@ export class App extends Component {
                 favourite: false,
                 liked: false,
                 id: uuidv4()
+            },
+            {
+                name: "Loving is everything",
+                viewers: 2011,
+                favourite: false,
+                liked: false,
+                id: uuidv4()
+            },
+            {
+                name: "I had everything but love",
+                viewers: 300,
+                favourite: false,
+                liked: false,
+                id: uuidv4()
+            },
+            {
+                name: "History of Brother Tate's",
+                viewers: 1000,
+                favourite: false,
+                liked: false,
+                id: uuidv4()
             }
-        ]
+        ],
+        term: "",
+        filter: "all"
     }
 
     // onDelete id
@@ -51,17 +74,55 @@ export class App extends Component {
         }))
     }
 
+    // onSearchHandler
+    onSearchHandler = (arr, term) => {
+        if (!term.trim()) {
+            return arr
+        }
+        return arr.filter(item => item.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+    }
+
+    onChangeTerm = (term) => this.setState({term})
+
+    // onFilterHandler
+    onFilterHandler = (arr, filter) => {
+        switch (filter) {
+            case "popular":
+                return arr.filter(x => x.favourite)
+            case "mostViewers":
+                return arr.filter(x => x.viewers > 500)
+            default:
+                return arr
+        }
+    }
+    onFilter = (filter) => this.setState({filter})
+
     render() {
-        const {data} = this.state
+        const {data, term, filter} = this.state
         const allMoviesCount = data.length
         const favouriteMoviesCount = data.filter(x => x.favourite).length
         const mostViewedMoviesCount = data.filter(x => x.viewers > 500).length
+        const visibleData = this.onFilterHandler(this.onSearchHandler(data, term), filter)
         return (
             <div className="app font-monospace container">
-                <AppInfo allMoviesCount={allMoviesCount} favouriteMoviesCount={favouriteMoviesCount} mostViewedMoviesCount={mostViewedMoviesCount} />
-                <Filters/>
-                <MovieList data={data} onDelete={this.onDelete} onToggle={this.onToggle}/>
-                <MovieAddForm addForm={this.addForm}/>
+                <AppInfo
+                    allMoviesCount={allMoviesCount}
+                    favouriteMoviesCount={favouriteMoviesCount}
+                    mostViewedMoviesCount={mostViewedMoviesCount}
+                />
+                <Filters
+                    onChangeTerm={this.onChangeTerm}
+                    onFilter={this.onFilter}
+                    filter={filter}
+                />
+                <MovieList
+                    data={visibleData}
+                    onDelete={this.onDelete}
+                    onToggle={this.onToggle}
+                />
+                <MovieAddForm
+                    addForm={this.addForm}
+                />
             </div>
         )
     }

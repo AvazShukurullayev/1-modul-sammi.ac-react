@@ -21,7 +21,7 @@ export class MovieList extends Component {
                                 onToggle={(e) => onToggle(item.id,e.currentTarget.getAttribute("data-toggle"))}
                             />)
                             :
-                            "no data"}
+                            <p className="text-center text-secondary fs-4">No data...</p>}
                     </ListGroup>
                 </Card.Body>
             </Card>
