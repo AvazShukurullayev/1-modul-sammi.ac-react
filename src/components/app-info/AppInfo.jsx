@@ -1,5 +1,13 @@
+import {Card} from "react-bootstrap";
+
 export const AppInfo = () => {
     return (
-        <div>App info</div>
+        <Card className="my-3">
+            <Card.Body>
+                <Card.Title>Barcha kinolar soni: 0</Card.Title>
+                <Card.Text className="m-0">Ko`rilgan kinolar soni: 0</Card.Text>
+                <Card.Text>Sevimli kinolar soni: 0</Card.Text>
+            </Card.Body>
+        </Card>
     )
 }
