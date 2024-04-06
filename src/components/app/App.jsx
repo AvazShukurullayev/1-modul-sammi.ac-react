@@ -18,8 +18,8 @@ export class App extends Component {
             {
                 name: "Mr. and Mrs.Smith",
                 viewers: 1400,
-                favourite: true,
-                liked: true,
+                favourite: false,
+                liked: false,
                 id: uuidv4()
             },
             {
@@ -33,7 +33,7 @@ export class App extends Component {
     }
 
     // onDelete id
-    onDelete = (id) => this.setState({data: this.state.data.filter(x => x.id !== id)})
+    onDelete = (id) => this.setState(({data}) => ({data: data.filter(x => x.id !== id)}))
 
     // addForm item
     addForm = (item) => {
@@ -41,13 +41,26 @@ export class App extends Component {
         this.setState(({data}) => ({data: [...data, newItem]}))
     }
 
+    // onFavourite
+    onToggle = (id, prop) => {
+        this.setState(({data}) => ({
+            data: data.map(x => {
+                if (x.id === id) return {...x, [prop]: !x[prop]}
+                return x
+            })
+        }))
+    }
+
     render() {
         const {data} = this.state
+        const allMoviesCount = data.length
+        const favouriteMoviesCount = data.filter(x => x.favourite).length
+        const mostViewedMoviesCount = data.filter(x => x.viewers > 500).length
         return (
             <div className="app font-monospace container">
-                <AppInfo/>
+                <AppInfo allMoviesCount={allMoviesCount} favouriteMoviesCount={favouriteMoviesCount} mostViewedMoviesCount={mostViewedMoviesCount} />
                 <Filters/>
-                <MovieList data={data} onDelete={this.onDelete}/>
+                <MovieList data={data} onDelete={this.onDelete} onToggle={this.onToggle}/>
                 <MovieAddForm addForm={this.addForm}/>
             </div>
         )

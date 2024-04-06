@@ -7,10 +7,15 @@ export class Filters extends Component {
     render() {
         return (
             <Card className="my-4 shadow">
+                <Card.Header>
+                    <Card.Title>Kinolar qidirish va filtrlash paneli</Card.Title>
+                </Card.Header>
                 <Card.Body>
                     <SearchPanel/>
-                    <AppFilter/>
                 </Card.Body>
+                <Card.Footer>
+                    <AppFilter/>
+                </Card.Footer>
             </Card>
         )
     }

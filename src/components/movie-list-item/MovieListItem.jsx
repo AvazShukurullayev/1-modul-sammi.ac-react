@@ -5,21 +5,21 @@ import {Component} from "react";
 
 export class MovieListItem extends Component {
     render() {
-        const {name, viewers, favourite, liked, onDelete} = this.props
+        const {name, viewers, favourite, liked, onDelete, onToggle} = this.props
         return (
             <ListGroup.Item as="li" className="">
                 <Row className="align-items-center justify-content-between">
-                    <Col md={7} style={{cursor: "pointer"}}>
+                    <Col md={7} style={{cursor: "pointer"}} onClick={onToggle} data-toggle="favourite">
                         <span className={`fs-5 ${favourite && 'text-warning'}`}>{name}</span>
                     </Col>
                     <Col md={4}>
                         <Row className="justify-content-between">
                             <Col md={7}>
-                                <Form.Control type="number" defaultValue={viewers} className="text-center"/>
+                                <Form.Control type="number" defaultValue={viewers} className={`text-center fw-bold ${favourite && 'text-warning'}`}/>
                             </Col>
                             <Col md={5}>
                                 <ButtonGroup>
-                                    <Button variant="outline-warning" size="sm">
+                                    <Button variant="outline-warning" size="sm" onClick={onToggle} data-toggle="liked">
                                         <Cookie/>
                                     </Button>
                                     <Button variant="outline-danger" size="sm" onClick={onDelete}>
@@ -41,5 +41,6 @@ MovieListItem.propTypes = {
     viewers: PropTypes.number,
     favourite: PropTypes.bool,
     liked: PropTypes.bool,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    onToggle: PropTypes.func,
 }

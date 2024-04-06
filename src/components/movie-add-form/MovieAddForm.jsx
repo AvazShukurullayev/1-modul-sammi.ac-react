@@ -22,8 +22,11 @@ export class MovieAddForm extends Component {
         const {name, viewers} = this.state
         return (
             <Card className="my-4 shadow">
+                <Card.Header>
+                    <Card.Title>Yangi kino haqida ma`lumot</Card.Title>
+                </Card.Header>
                 <Card.Body>
-                    <Card.Title className="my-3">Yangi kino qo`shish</Card.Title>
+                    <Card.Text>Yangi kino qo`shish</Card.Text>
                     <Form onSubmit={this.onSubmit}>
                         <Row>
                             <Col md={5}>

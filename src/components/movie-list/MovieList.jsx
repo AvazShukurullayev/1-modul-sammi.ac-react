@@ -5,9 +5,12 @@ import {Component} from "react";
 
 export class MovieList extends Component {
     render() {
-        const {data, onDelete} = this.props
+        const {data, onDelete, onToggle} = this.props
         return (
             <Card className="my-4 shadow">
+                <Card.Header>
+                    <Card.Title>Kinolar ro`yxati</Card.Title>
+                </Card.Header>
                 <Card.Body>
                     <ListGroup as="ul">
                         {data.length ?
@@ -15,6 +18,7 @@ export class MovieList extends Component {
                                 key={item.id}
                                 {...item}
                                 onDelete={() => onDelete(item.id)}
+                                onToggle={(e) => onToggle(item.id,e.currentTarget.getAttribute("data-toggle"))}
                             />)
                             :
                             "no data"}
@@ -27,5 +31,6 @@ export class MovieList extends Component {
 
 MovieList.propTypes = {
     data: PropTypes.array,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    onToggle: PropTypes.func,
 }
