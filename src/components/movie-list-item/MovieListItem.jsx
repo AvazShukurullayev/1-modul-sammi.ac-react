@@ -1,7 +1,8 @@
 import {Button, ButtonGroup, Col, Form, ListGroup, Row} from "react-bootstrap";
-import {Cookie, StarFill, Trash} from "react-bootstrap-icons";
+import {Cookie, StarFill} from "react-bootstrap-icons";
 import PropTypes from "prop-types";
 import {Component} from "react";
+import {ModalDelete} from "../modal-delete/ModalDelete.jsx";
 
 export class MovieListItem extends Component {
     render() {
@@ -15,16 +16,15 @@ export class MovieListItem extends Component {
                     <Col md={4}>
                         <Row className="justify-content-between">
                             <Col md={7}>
-                                <Form.Control type="number" defaultValue={viewers} className={`text-center fw-bold ${favourite && 'text-warning'}`}/>
+                                <Form.Control type="number" defaultValue={viewers}
+                                              className={`text-center fw-bold ${favourite && 'text-warning'}`}/>
                             </Col>
                             <Col md={5}>
                                 <ButtonGroup>
                                     <Button variant="outline-warning" size="sm" onClick={onToggle} data-toggle="liked">
                                         <Cookie/>
                                     </Button>
-                                    <Button variant="outline-danger" size="sm" onClick={onDelete}>
-                                        <Trash/>
-                                    </Button>
+                                    <ModalDelete onDelete={onDelete}/>
                                 </ButtonGroup>
                                 <StarFill className={`ms-2 ${liked ? 'd-inline' : 'd-none'}`} color="yellow"/>
                             </Col>
