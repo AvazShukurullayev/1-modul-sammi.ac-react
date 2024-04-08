@@ -2,54 +2,20 @@ import {AppInfo} from "../app-info/AppInfo.jsx";
 import {MovieList} from "../movie-list/MovieList.jsx";
 import {MovieAddForm} from "../movie-add-form/MovieAddForm.jsx";
 import {Filters} from "../filters/Filters.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {v4 as uuidv4} from "uuid";
 
+const arr = [
+    {name: "Omar", viewers: 911, favourite: false, liked: false, id: uuidv4()},
+    {name: "Mr. and Mrs.Smith", viewers: 1400, favourite: false, liked: false, id: uuidv4()},
+    {name: "Empire of Ottoman", viewers: 385, favourite: false, liked: false, id: uuidv4()},
+    {name: "Loving is everything", viewers: 2011, favourite: false, liked: false, id: uuidv4()},
+    {name: "I had everything but love", viewers: 300, favourite: false, liked: false, id: uuidv4()},
+    {name: "History of Brother Tate's", viewers: 1000, favourite: false, liked: false, id: uuidv4()}
+]
 export const App = () => {
-    const [data, setData] = useState([
-        {
-            name: "Omar",
-            viewers: 911,
-            favourite: false,
-            liked: false,
-            id: uuidv4()
-        },
-        {
-            name: "Mr. and Mrs.Smith",
-            viewers: 1400,
-            favourite: false,
-            liked: false,
-            id: uuidv4()
-        },
-        {
-            name: "Empire of Ottoman",
-            viewers: 385,
-            favourite: false,
-            liked: false,
-            id: uuidv4()
-        },
-        {
-            name: "Loving is everything",
-            viewers: 2011,
-            favourite: false,
-            liked: false,
-            id: uuidv4()
-        },
-        {
-            name: "I had everything but love",
-            viewers: 300,
-            favourite: false,
-            liked: false,
-            id: uuidv4()
-        },
-        {
-            name: "History of Brother Tate's",
-            viewers: 1000,
-            favourite: false,
-            liked: false,
-            id: uuidv4()
-        }
-    ])
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const [term, setTerm] = useState("")
     const [filter, setFilter] = useState("all")
 
@@ -93,16 +59,21 @@ export const App = () => {
     }
 
     const onFilter = (filter) => setFilter(filter)
-    const allMoviesCount = data.length
-    const favouriteMoviesCount = data.filter(x => x.favourite).length
-    const mostViewedMoviesCount = data.filter(x => x.viewers > 500).length
-    const visibleData = onFilterHandler(onSearchHandler(data, term), filter)
+
+    useEffect(() => {
+        setLoading(true)
+        fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+            .then(response => response.json())
+            .then(json => setData(json.map(x => ({name: x.title, id: x.id, viewers: x.id * 123, favourite: false, liked: false}))))
+            .catch(err => console.log(err))
+            .finally(() => setLoading(false))
+    }, []);
     return (
         <div className="app font-monospace container">
             <AppInfo
-                allMoviesCount={allMoviesCount}
-                favouriteMoviesCount={favouriteMoviesCount}
-                mostViewedMoviesCount={mostViewedMoviesCount}
+                allMoviesCount={data.length}
+                favouriteMoviesCount={data.filter(x => x.favourite).length}
+                mostViewedMoviesCount={data.filter(x => x.viewers > 500).length}
             />
             <Filters
                 onChangeTerm={onChangeTerm}
@@ -110,7 +81,8 @@ export const App = () => {
                 filter={filter}
             />
             <MovieList
-                data={visibleData}
+                loading={loading}
+                data={onFilterHandler(onSearchHandler(data, term), filter)}
                 onDelete={onDelete}
                 onToggle={onToggle}
             />
